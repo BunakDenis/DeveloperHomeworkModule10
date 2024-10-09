@@ -46,13 +46,11 @@ public class DateTimeService {
     }
 
     public static String formatTimeZone(String utc) {
-        System.out.println(utc);
         StringBuilder timeZone = new StringBuilder(utc.trim());
 
         if (timeZone.indexOf("+") == -1) {
             timeZone.setCharAt(timeZone.indexOf("C") + 1, '+');
         }
-        System.out.println(timeZone);
         return timeZone.toString();
     }
 }
