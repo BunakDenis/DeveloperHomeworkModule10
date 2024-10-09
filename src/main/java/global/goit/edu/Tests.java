@@ -1,6 +1,9 @@
 package global.goit.edu;
 
 
+import global.goit.edu.dateTimeService.DateTimeService;
+import global.goit.edu.filereader.HTMLFileReader;
+
 import java.io.IOException;
 
 public class Tests {
@@ -11,6 +14,7 @@ public class Tests {
         StringBuilder stringBuilder = new StringBuilder(read);
         stringBuilder.replace(stringBuilder.indexOf("h3") + 3, stringBuilder.indexOf("/h3") - 1, "Hello");
         System.out.println(stringBuilder);
+
         //System.out.println(DateTimeService.setTimeToHTMLPage(read, "Hello World!"));
 
 /*        LocalDateTime dateTime = LocalDateTime.now();

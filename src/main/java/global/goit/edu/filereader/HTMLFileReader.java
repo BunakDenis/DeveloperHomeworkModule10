@@ -1,10 +1,10 @@
-package global.goit.edu;
+package global.goit.edu.filereader;
 
 import java.io.*;
 import java.util.Scanner;
 import java.util.StringJoiner;
 
-public class HTMLFileReader {
+public class HTMLFileReader implements FileReader {
 
     public static String read(String path) throws IOException {
         StringJoiner result = new StringJoiner("\n");

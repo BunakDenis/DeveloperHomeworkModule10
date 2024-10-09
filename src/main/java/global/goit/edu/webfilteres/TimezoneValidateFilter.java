@@ -1,10 +1,10 @@
 package global.goit.edu.webfilteres;
 
-import global.goit.edu.HTMLFileReader;
+import global.goit.edu.filereader.HTMLFileReader;
 import global.goit.edu.dateTimeService.DateTimeService;
-import global.goit.edu.servlets.TimeServlet;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
@@ -20,13 +20,16 @@ public class TimezoneValidateFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        ServletContext context = getServletContext();
+        String htmlIndexFilePath = context.getRealPath("/index.jsp");
 
+        String contentOfHtmlFile = HTMLFileReader.read(htmlIndexFilePath);
         String timezone = req.getParameter("timezone");
 
         if (Objects.isNull(timezone)) {
             String content = DateTimeService
                     .setTimeToHTMLPage(
-                            HTMLFileReader.read(new TimeServlet().htmlIndexFilePath), DateTimeService.get()
+                            contentOfHtmlFile, DateTimeService.get()
                     );
 
             res.setContentType("text/html; charset=utf-8");
@@ -34,16 +37,15 @@ public class TimezoneValidateFilter extends HttpFilter {
             res.getWriter().close();
         } else {
             timezone = DateTimeService.formatTimeZone(timezone);
-            ZoneId zoneId = null;
 
             try {
-                zoneId = ZoneId.of(timezone);
+                ZoneId zoneId = ZoneId.of(timezone);
             } catch (DateTimeException e) {
                 res.setStatus(404);
                 res.setContentType("text/html; charset=utf-8");
                 String content = DateTimeService
                         .setTimeToHTMLPage(
-                                HTMLFileReader.read(new TimeServlet().htmlIndexFilePath), "Invalid timezone"
+                                contentOfHtmlFile, "Invalid timezone"
                         );
 
                 res.getWriter().write(content);
